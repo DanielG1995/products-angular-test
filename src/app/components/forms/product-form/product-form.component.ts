@@ -64,8 +64,8 @@ export class ProductFormComponent implements OnChanges {
       name: product.name,
       description: product.description,
       logo: product.logo,
-      date_release: product.date_release ? new Date(product.date_release!+ 'T00:00:00Z').toLocaleDateString(DATE_FORMAT) : null,
-      date_revision: product.date_revision ? new Date(product.date_revision!+ 'T00:00:00Z').toLocaleDateString(DATE_FORMAT) : null,
+      date_release: product.date_release ? new Date(product.date_release!).toLocaleDateString(DATE_FORMAT) : null,
+      date_revision: product.date_revision ? new Date(product.date_revision!).toLocaleDateString(DATE_FORMAT) : null,
     });
     this.productForm.addValidators(dateComparisonValidator())
     if (!this.disabledInputs || this.disabledInputs?.length === 0) {

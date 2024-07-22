@@ -1,9 +1,10 @@
 <div class="page-content">
     <div class="form-content">
-        <p class="title-page">Editar</p>
+        <p class="title-page">Registro de formulario</p>
         <app-product-form [product]="product!" (submitEvent)="onSubmitCreate($event)" />
         @if(messageAlert!==''){
         <app-alert [message]="messageAlert" />
         }
+        <a class="link" routerLink="/products" routerLinkActive="active">Productos</a>
     </div>
 </div>

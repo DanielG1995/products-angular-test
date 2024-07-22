@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink, RouterLinkActive } from '@angular/router';
 import { Product } from '../../interfaces/IProduct';
 import { ProductsService } from '../../services/products.service';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,8 @@ import { AlertComponent } from "../../components/alert/alert/alert.component";
 @Component({
   selector: 'app-edit-product',
   standalone: true,
-  imports: [CommonModule, ProductFormComponent, AlertComponent],
+  imports: [CommonModule, ProductFormComponent, AlertComponent, RouterLink,
+    RouterLinkActive],
   templateUrl: './edit-product.component.html',
   styleUrl: './edit-product.component.css'
 })
