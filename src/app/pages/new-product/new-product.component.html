@@ -1,5 +1,9 @@
-<p>Crear</p>
-<app-product-form [product]="product" (submitEvent)="onSubmitCreate($event)" />
-@if(messageAlert!==''){
-<app-alert [message]="messageAlert" />
-}
+<div class="page-content">
+    <div class="form-content">
+        <p class="title-page">Editar</p>
+        <app-product-form [product]="product!" (submitEvent)="onSubmitCreate($event)" />
+        @if(messageAlert!==''){
+        <app-alert [message]="messageAlert" />
+        }
+    </div>
+</div>

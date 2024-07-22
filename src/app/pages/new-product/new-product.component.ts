@@ -8,6 +8,7 @@ import { ProductsService } from '../../services/products.service';
 import { Product } from '../../interfaces/IProduct';
 import { AlertComponent } from "../../components/alert/alert/alert.component";
 import { EMPTY_PRODUCT } from '../../utils';
+import { Response } from '../../interfaces/IResponse';
 
 @Component({
   selector: 'app-new-product',
@@ -21,7 +22,7 @@ export class NewProductComponent {
   messageAlert = ''
   product = EMPTY_PRODUCT
   onSubmitCreate(newProduct: Product) {
-    this.productsService.createProduct(newProduct).subscribe((resp: any) => {
+    this.productsService.createProduct(newProduct).subscribe((resp: Response) => {
       this.messageAlert = resp.message
     })
   }

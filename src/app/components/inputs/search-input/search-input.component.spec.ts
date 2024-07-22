@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchInputComponent } from './search-input.component';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SearchInputComponent', () => {
   let component: SearchInputComponent;
@@ -8,7 +10,7 @@ describe('SearchInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchInputComponent]
+      imports: [SearchInputComponent,  RouterModule.forRoot([]), HttpClientModule]
     })
     .compileComponents();
     

@@ -27,10 +27,8 @@ export class EditProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.currentId)
     if (this.currentId) {
       this.#productService.getProductByid(this.currentId).subscribe(resp => {
-        console.log(this.product)
         this.product = resp
       })
     }

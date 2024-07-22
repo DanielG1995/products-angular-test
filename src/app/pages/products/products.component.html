@@ -1,6 +1,12 @@
-<app-search-input />
-<a routerLink="/new-product" routerLinkActive="active">Agregar</a>
-<app-table (confirm)="onDeleteProduct($event)" [headers]="headers" [items]="productsService.currentProducts()" />
+<div class="container-header-products">
+    <app-search-input />
+    <button class="btn btn-primary" routerLink="/new-product" routerLinkActive="active">Agregar</button>
+</div>
+@if(isLoading()){
+    <app-table-skeleton [headers]="headers" [rows]="5"/>
+}@else{
+    <app-table (confirm)="onDeleteProduct($event)" [headers]="headers" [items]="productsService.currentProducts()" />
+}
 @if(messageAlert!==''){
 <app-alert [message]="messageAlert" />
 }

@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Product } from '../../../interfaces/IProduct';
-import { EMPTY_PRODUCT } from '../../../utils';
+import { DATE_FORMAT, EMPTY_PRODUCT } from '../../../utils';
 import { dateComparisonValidator } from '../../../validators/dateComparisonValidator';
+import { ProductsService } from '../../../services/products.service';
+import { idValidator } from '../../../validators/idValidator';
 
 @Component({
   selector: 'app-product-form',
@@ -16,18 +18,32 @@ export class ProductFormComponent implements OnChanges {
   @Input() product: Product = EMPTY_PRODUCT;
   @Input() disabledInputs?: string[]
   @Output() submitEvent = new EventEmitter<any>();
-  productForm: FormGroup = this.fb.group({});;
-
+  productForm: FormGroup = this.fb.group({});
+  minDate = new Date().toLocaleDateString('en-CA')
+  productService = inject(ProductsService)
   constructor(private fb: FormBuilder) {
+
     this.productForm = this.fb.group({
-      id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      id: ['', {
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(10)],
+        asyncValidators: [],
+        updateOn: 'blur'
+      }],
       name: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       logo: ['', Validators.required],
-      date_release: ['', Validators.required],
-      date_revision: ['', Validators.required],
-    }), { validators: dateComparisonValidator() };
+      date_release: [undefined, Validators.required],
+      date_revision: [undefined, Validators.required],
+    });
 
+  }
+
+  addAsyncValidators() {
+    const asyncFieldControl = this.productForm.get('id');
+    if (asyncFieldControl) {
+      asyncFieldControl.setAsyncValidators([idValidator(this.productService)]);
+      asyncFieldControl.updateValueAndValidity();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -37,26 +53,29 @@ export class ProductFormComponent implements OnChanges {
 
     if (changes['disabledInputs']) {
       this.disabledInputs?.forEach(input => {
-        console.log(input)
         this.productForm.get(input)?.disable();
       })
     }
   }
 
-  updateForm(product: any) {
+  updateForm(product: Product) {
     this.productForm.patchValue({
       id: product.id,
       name: product.name,
       description: product.description,
       logo: product.logo,
-      date_release: new Date(product.date_release).toLocaleDateString('en-CA'),
-      date_revision: new Date(product.date_revision).toLocaleDateString('en-CA'),
+      date_release: product.date_release ? new Date(product.date_release!+ 'T00:00:00Z').toLocaleDateString(DATE_FORMAT) : null,
+      date_revision: product.date_revision ? new Date(product.date_revision!+ 'T00:00:00Z').toLocaleDateString(DATE_FORMAT) : null,
     });
+    this.productForm.addValidators(dateComparisonValidator())
+    if (!this.disabledInputs || this.disabledInputs?.length === 0) {
+      this.addAsyncValidators()
+    }
+
   }
 
 
   onSubmit() {
-    console.log('emit', this.productForm.valid)
     if (this.productForm.valid) {
       this.submitEvent.emit(this.productForm.value);
     } else {
@@ -70,7 +89,6 @@ export class ProductFormComponent implements OnChanges {
   }
 
   isDisabled(name: string) {
-    console.log(this.disabledInputs?.includes(name) || false)
     return this.disabledInputs?.includes(name) || false
   }
 
@@ -83,11 +101,15 @@ export class ProductFormComponent implements OnChanges {
     for (const key of Object.keys(errors)) {
       switch (key) {
         case 'required':
-          return 'Campo obligatorio';
+          return 'Este campo es requerido';
         case 'minlength':
           return `Mínimo ${errors['minlength'].requiredLength} caracteres.`;
         case 'maxlength':
           return `Máximo ${errors['maxlength'].requiredLength} caracteres.`;
+        case 'duplicatedId':
+          return `Ya existe un Id registrado`;
+
+
       }
     }
     if (this.productForm.errors?.['dateComparison']) {
@@ -98,6 +120,23 @@ export class ProductFormComponent implements OnChanges {
   }
 
   resetForm() {
-    this.productForm.reset()
+    const defaultValues: Record<string, any> = {}
+    this.disabledInputs?.forEach(input => {
+      defaultValues[input] = this.product.id
+    })
+    this.productForm.reset(defaultValues)
+  }
+
+  updateDate(name: string, nameToUpdate: string) {
+    const inputDate = new Date(this.productForm.get(name)?.value + 'T00:00:00Z');
+    const utcYear = inputDate.getUTCFullYear();
+    const utcMonth = inputDate.getUTCMonth();
+    const utcDate = inputDate.getUTCDate();
+    const newDate = new Date(Date.UTC(utcYear + 1, utcMonth, utcDate));
+    const year = newDate.getUTCFullYear();
+    const month = ('0' + (newDate.getUTCMonth() + 1)).slice(-2);
+    const day = ('0' + newDate.getUTCDate()).slice(-2);
+    const formattedDate = `${year}-${month}-${day}`;
+    this.productForm.get(nameToUpdate)?.setValue(formattedDate);
   }
 }
