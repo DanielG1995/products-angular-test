@@ -117,7 +117,7 @@ describe('ProductFormComponent', () => {
     
   });
 
-  it('should call updateDate method and set the correct value', () => {
+  it('Deberia actualizar campo date_revision con un año a partir de date_release', () => {
     const dateInput = component.productForm.get('date_release');
     if (dateInput) {
       dateInput.setValue('2024-01-01');
@@ -129,7 +129,7 @@ describe('ProductFormComponent', () => {
     }
   });
 
-  it('should handle field errors correctly', () => {
+  it('Deberia mostrar mensajes de errores correctos', () => {
     component.productForm.get('description')?.setValue('');
     component.productForm.get('name')?.setValue('shrt');
     
