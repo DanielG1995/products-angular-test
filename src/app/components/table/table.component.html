@@ -1,0 +1,61 @@
+<table>
+    <thead>
+        <tr class="header">
+            @for(h of headers(); track h.key){
+            <th>{{h.label}}</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for(p of items().slice(0,paginateCount()); track p.id){
+        <tr>
+            @for(h of headers(); track h.key ){
+            <td>
+                @switch (h?.type) {
+                @case ('img') {
+                <img class="img-icon" [srcset]="p?.[h.key]" alt="logo" />
+                }
+                @case ('date') {
+                {{p?.[h.key] | date:'shortDate'}}
+                }
+                @case ('options') {
+                <button class="btn-menu" (click)="toggleMenu(p.id)"><svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24" width="24" height="24">
+                        <circle cx="12" cy="4" r="2"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <circle cx="12" cy="20" r="2"></circle>
+                    </svg></button>
+                @if(currentId === p.id){
+                <div (click)="toggleMenu('')" class="bg-menu-item"></div>
+                <div class="menu-item">
+                    <a [routerLink]="['/edit-product', p.id]">Actualizar</a>
+                    <span (click)="showModal(p)">Eliminar</span>
+                </div>
+                }
+                }
+                @default {
+                {{p?.[h.key] }}
+                }
+                }
+
+            </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+<span>Resultados: {{count()}} </span>
+<select (change)="onChangePagination(+paginate.value)" #paginate>
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="20">20</option>
+</select>
+<app-modal [isVisible]="isModalVisible" (close)="showModal()">
+    <div class="container">
+        Estas seguro de Eliminar el producto {{currentProduct?.name}}?
+        <div class="btn-container">
+            <button (click)="showModal()">Cancelar</button>
+            <button (click)="onClickConfirm()">Confirmar</button>
+        </div>
+    </div>
+</app-modal>

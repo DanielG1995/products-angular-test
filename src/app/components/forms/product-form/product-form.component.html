@@ -1,0 +1,57 @@
+<div>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id">
+      <div *ngIf="isFieldInvalid('id')">
+        {{getFieldError("id")}}
+      </div>
+    </div>
+
+    <div>
+      <label for="name">Nombre:</label>
+      <input  type="text" id="name" formControlName="name">
+      <div *ngIf="isFieldInvalid('name')">
+        {{getFieldError("name")}}
+      </div>
+    </div>
+
+    <div>
+      <label for="description">Descripción:</label>
+      <textarea  id="description" formControlName="description"></textarea>
+      <div *ngIf="isFieldInvalid('description')">
+        {{getFieldError("description")}}
+      </div>
+    </div>
+
+    <div>
+      <label for="logo">Logo URL:</label>
+      <input  type="text" id="logo" formControlName="logo">
+      <div *ngIf="isFieldInvalid('logo')">
+        {{getFieldError("logo")}}
+      </div>
+    </div>
+
+    <div>
+      <label for="date_release">Fecha de Liberación:</label>
+      <input  type="date" id="date_release" formControlName="date_release">
+      <div *ngIf="isFieldInvalid('date_release')">
+        {{getFieldError("date_release")}}
+      </div>
+    </div>
+
+    <div>
+      <label for="date_revision">Fecha de Revisión:</label>
+      <input type="date" id="date_revision" formControlName="date_revision">
+      <div *ngIf="isFieldInvalid('date_revision')">
+        {{getFieldError("date_revision")}}
+      </div>
+      <div *ngIf="productForm.errors?.['dateComparison']">
+        {{ getFieldError('date_revision') }}
+      </div>
+    </div>
+
+    <button (click)="resetForm()" type="button">Reiniciar</button>
+    <button type="submit">Enviar</button>
+  </form>
+</div>

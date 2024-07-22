@@ -1,0 +1,5 @@
+<p>Crear</p>
+<app-product-form [product]="product" (submitEvent)="onSubmitCreate($event)" />
+@if(messageAlert!==''){
+<app-alert [message]="messageAlert" />
+}

@@ -1,0 +1,5 @@
+<p>Editar</p>
+<app-product-form [product]="product!" (submitEvent)="onSubmitUpdate($event)" [disabledInputs]="disabledInputs" />
+@if(message!==''){
+<app-alert [message]="message" />
+}   

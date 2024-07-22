@@ -1,0 +1,95 @@
+.img-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-size: 'cover';
+}
+
+.bg-menu-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.2;
+
+}
+
+.menu-item {
+    position: absolute;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
+}
+
+a,
+span {
+    padding: 10px;
+    text-decoration: none;
+    border-bottom: solid 1px whitesmoke;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+a:hover,
+span:hover {
+    background-color: whitesmoke;
+}
+
+.btn-menu {
+    border: none;
+    border-radius: 100%;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    transition: all;
+    transition-duration: 320ms;
+}
+
+.btn-menu:hover {
+    opacity: 0.4;
+
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+}
+
+table {
+    width: 100%;
+    padding: 30px 40px;
+    border-spacing: 0px !important;
+    border-radius: 20px;
+}
+
+
+th {
+    background-color: whitesmoke;
+    padding: 20px;
+    text-align: center
+}
+
+td{
+    border-bottom: 1px solid whitesmoke;
+}
+
+.header:first-child {
+    border-top-left-radius: 20px;
+}
+
+.header:last-child {
+    border-top-right-radius: 20px;
+}
+
+
+td {
+    text-align: center;
+}

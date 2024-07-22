@@ -1,0 +1,6 @@
+<app-search-input />
+<a routerLink="/new-product" routerLinkActive="active">Agregar</a>
+<app-table (confirm)="onDeleteProduct($event)" [headers]="headers" [items]="productsService.currentProducts()" />
+@if(messageAlert!==''){
+<app-alert [message]="messageAlert" />
+}
