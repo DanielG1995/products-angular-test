@@ -1,7 +1,7 @@
 <div class="page-content">
     <div class="form-content">
         <p class="title-page">Registro de formulario</p>
-        <app-product-form [product]="product!" (submitEvent)="onSubmitCreate($event)" />
+        <app-product-form style="width: 80%;" [product]="product!" (submitEvent)="onSubmitCreate($event)" />
         @if(messageAlert!==''){
         <app-alert [message]="messageAlert" />
         }
